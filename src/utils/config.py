@@ -38,7 +38,7 @@ __C.VOC2011.CLASSES = ['aeroplane', 'bicycle', 'bird', 'boat', 'bottle', 'bus', 
 
 # Willow-Object Dataset
 __C.WILLOW = edict()
-__C.WILLOW.ROOT_DIR = 'data/WILLOW-ObjectClass'
+__C.WILLOW.ROOT_DIR = 'data/WillowObject/WILLOW-ObjectClass'
 __C.WILLOW.CLASSES = ['Car', 'Duck', 'Face', 'Motorbike', 'Winebottle']
 __C.WILLOW.KPT_LEN = 10
 __C.WILLOW.TRAIN_NUM = 20
@@ -61,6 +61,16 @@ __C.PCA.BS_EPSILON = 1.0e-10
 __C.PCA.VOTING_ALPHA = 200.
 __C.PCA.GNN_LAYER = 5
 __C.PCA.GNN_FEAT = 1024
+
+# CIE model options
+__C.CIE = edict()
+__C.CIE.FEATURE_CHANNEL = 512
+__C.CIE.SK_ITER_NUM = 20
+__C.CIE.SK_EPSILON = 1.0e-10
+__C.CIE.SK_TAU = 0.005
+__C.CIE.GNN_LAYER = 5
+__C.CIE.GNN_FEAT = 1024
+__C.CIE.CROSS_ITER = False
 
 #
 # Training options
@@ -127,6 +137,9 @@ __C.GPUS = [0]
 
 # num of dataloader processes
 __C.DATALOADER_NUM = __C.BATCH_SIZE
+
+# path to load pretrained model weights
+__C.PRETRAINED_PATH = ''
 
 # Mean and std to normalize images
 __C.NORM_MEANS = [0.485, 0.456, 0.406]

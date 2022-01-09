@@ -118,7 +118,7 @@ if __name__ == '__main__':
     Net = mod.Net
 
     paddle.seed(cfg.RANDOM_SEED)
-    paddle.set_device(device='gpu:0')
+    paddle.set_device(device='gpu:' + str(cfg.GPUS[0]))
 
     image_dataset = GMDataset(cfg.DATASET_FULL_NAME,
                               sets='test',
@@ -129,7 +129,7 @@ if __name__ == '__main__':
     #device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     model = Net()
-    load_model(model, 'src/utils_pdl/pca.pdparams')
+    load_model(model, cfg.PRETRAINED_PATH)
     #load_model(model, 'pretrained_vgg16_pca_voc.pdparams')
     #model = model.to(device)
     #model = DataParallel(model, device_ids=cfg.GPUS)

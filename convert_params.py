@@ -1,12 +1,13 @@
 # Tribute to https://github.com/wuyang556/paddlevision
+import torch
 from tqdm import tqdm
 from collections import OrderedDict
 import paddle.fluid as fluid
 from torchvision import models
 from paddle import vision
-
-from models.PCA.model import Net as tchPCA
-from models.PCA.model_pdl import Net as pdlPCA
+import paddle
+from models.CIE.model import Net as tchPCA
+from models.CIE.model_pdl import Net as pdlPCA
 from src.utils.model_sl import load_model
 from src.utils.config import cfg
 
@@ -38,6 +39,9 @@ def convert_params(model_th, model_pd, model_path):
         elif ('cross_layer' in key_pd) :
             # noww only support **one** cross layer
             key_th = key_pd.replace('cross_layer', 'cross_graph_0')
+        elif ('cross_edge_layer' in key_pd) :
+            # noww only support **one** cross layer
+            key_th = key_pd.replace('cross_edge_layer', 'cross_graph_edge_0')
 
         if "_mean" in key_pd:
             key_th = key_pd.replace("_mean", "running_mean")
@@ -82,11 +86,12 @@ def pca_convert():
     '''
     with fluid.dygraph.guard():
         model_th = tchPCA()
+        # model_th = model_th.to(device)
         model_pd = pdlPCA()
-        #load_model(model_th, "output/vgg16_pca_voc/params/params_0020.pt")
-        load_model(model_th, "pretrained/pretrained_params_vgg16_pca_voc.pt")
-        #load_model(model_th , 'share_param.pt')
-        model_path = "./pretrained/new_vgg16_pca_voc"
+        # load_model(model_th, "output/vgg16_pca_voc/params/params_0020.pt")
+        load_model(model_th, "../ThinkMatchPretrained/pretrained_params_vgg16_cie_willow.pt")
+        # load_model(model_th , 'share_param.pt')
+        model_path = "../ThinkMatchPretrained/pretrained_params_vggpdl_willow_voc"
         print(model_th.state_dict().keys())
         print(len(model_th.state_dict().keys()))
         print(model_pd.state_dict().keys())
@@ -100,4 +105,6 @@ if __name__ == '__main__':
     from src.utils.print_easydict import print_easydict
 
     args = parse_args('Deep learning of graph matching training & evaluation code.')
+    # paddle.set_device(device='gpu:' + str(cfg.GPUS[0]))
+    # device = torch.device("cpu")
     pca_convert()
